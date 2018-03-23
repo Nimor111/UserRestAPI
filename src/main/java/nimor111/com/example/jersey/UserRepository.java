@@ -69,4 +69,21 @@ public class UserRepository {
 
         return user;
     }
+
+    public void createUser(User user) {
+        String sql = "INSERT INTO USER (FIRSTNAME, LASTNAME, EMAIL, ROLE) VALUES (?, ?, ?, ?)";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, user.getFirstName());
+            st.setString(2, user.getLastName());
+            st.setString(3, user.getEmail());
+            st.setString(4, user.getRole().toString());
+            st.executeUpdate();
+        } catch (SQLException ex) {
+           System.out.println("SQLException: " + ex.getMessage());
+           System.out.println("SQLState: " + ex.getSQLState());
+           System.out.println("VendorError: " + ex.getErrorCode());
+        }
+    }
 }
