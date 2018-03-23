@@ -47,4 +47,26 @@ public class UserRepository {
 
        return users;
     }
+
+    public User getUser(String email) {
+        User user = new User();
+        String sql = String.format("SELECT * FROM USER WHERE EMAIL=\"%s\";", email);
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()) {
+                user.setFirstName(rs.getString(1));
+                user.setLastName(rs.getString(2));
+                user.setEmail(rs.getString(3));
+                user.setRole(Role.valueOf(rs.getString(4)));
+                user.setPassword(rs.getString(5));
+            }
+        } catch (SQLException ex) {
+           System.out.println("SQLException: " + ex.getMessage());
+           System.out.println("SQLState: " + ex.getSQLState());
+           System.out.println("VendorError: " + ex.getErrorCode());
+        }
+
+        return user;
+    }
 }
