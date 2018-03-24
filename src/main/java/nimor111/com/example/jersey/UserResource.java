@@ -2,6 +2,7 @@ package nimor111.com.example.jersey;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/users")
@@ -23,6 +24,10 @@ public class UserResource {
     public User getUser(@PathParam("email") String email) {
         User user = repo.getUser(email);
 
+        if (user == null) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+
         return user;
     }
 
@@ -31,7 +36,9 @@ public class UserResource {
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public User createUser(User user) {
-        repo.createUser(user);
+        if (repo.createUser(user) == null) {
+            throw new WebApplicationException(Response.Status.BAD_REQUEST);
+        }
 
         return user;
     }
@@ -41,8 +48,8 @@ public class UserResource {
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public User updateUser(User user) {
-        if (repo.getUser(user.getEmail()) == new User()) {
-            repo.createUser(user);
+        if (repo.getUser(user.getEmail()) == null) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
         } else {
             repo.updateUser(user);
         }
@@ -55,11 +62,13 @@ public class UserResource {
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public User deleteUser(@PathParam("email") String email) {
         User user = repo.getUser(email);
-        if (user != new User()) {
+        if (user != null) {
             repo.deleteUser(email);
-        }
 
-        return user;
+            return user;
+        } else {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
     }
 
 }

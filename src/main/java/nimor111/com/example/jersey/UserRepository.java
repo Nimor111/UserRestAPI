@@ -22,7 +22,7 @@ public class UserRepository {
 
     public List<User> getUsers() {
        List<User> users = new ArrayList<User>();
-       String sql = "SELECT * FROM USER;";
+       String sql = "SELECT FIRSTNAME, LASTNAME, EMAIL, role, PASSWORD FROM USER;";
 
        try {
            Statement st = conn.createStatement();
@@ -43,18 +43,20 @@ public class UserRepository {
            System.out.println("SQLException: " + ex.getMessage());
            System.out.println("SQLState: " + ex.getSQLState());
            System.out.println("VendorError: " + ex.getErrorCode());
+           return null;
        }
 
        return users;
     }
 
     public User getUser(String email) {
-        User user = new User();
+        User user = null;
         String sql = String.format("SELECT * FROM USER WHERE EMAIL=\"%s\";", email);
         try {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
+                user = new User();
                 user.setFirstName(rs.getString(1));
                 user.setLastName(rs.getString(2));
                 user.setEmail(rs.getString(3));
@@ -70,7 +72,7 @@ public class UserRepository {
         return user;
     }
 
-    public void createUser(User user) {
+    public User createUser(User user) {
         String sql = "INSERT INTO USER (FIRSTNAME, LASTNAME, EMAIL, ROLE) VALUES (?, ?, ?, ?)";
 
         try {
@@ -80,15 +82,20 @@ public class UserRepository {
             st.setString(3, user.getEmail());
             st.setString(4, user.getRole().toString());
             st.executeUpdate();
+
+            return user;
         } catch (SQLException ex) {
            System.out.println("SQLException: " + ex.getMessage());
            System.out.println("SQLState: " + ex.getSQLState());
            System.out.println("VendorError: " + ex.getErrorCode());
+           return null;
+        } catch (Exception ex) {
+            return null;
         }
     }
 
     // TODO add permissions on this, only admin should be able to edit password
-    public void updateUser(User user) {
+    public User updateUser(User user) {
         String sql = "UPDATE USER SET FIRSTNAME=?, LASTNAME=?, ROLE=?, PASSWORD=? WHERE EMAIL=?";
 
         try {
@@ -99,10 +106,15 @@ public class UserRepository {
             st.setString(4, user.getPassword());
             st.setString(5, user.getEmail());
             st.executeUpdate();
+
+            return user;
         } catch (SQLException ex) {
            System.out.println("SQLException: " + ex.getMessage());
            System.out.println("SQLState: " + ex.getSQLState());
            System.out.println("VendorError: " + ex.getErrorCode());
+           return null;
+        } catch (Exception ex) {
+            return null;
         }
     }
 
