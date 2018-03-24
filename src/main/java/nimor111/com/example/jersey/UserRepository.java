@@ -6,8 +6,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserRepository {
-    Connection conn = null;
+class UserRepository {
+    private Connection conn = null;
 
     public UserRepository() {
         try {
@@ -16,7 +16,7 @@ public class UserRepository {
             DataSource dataSource = (DataSource)env.lookup("jdbc/javaUserService");
             conn = dataSource.getConnection();
         } catch(Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -95,7 +95,7 @@ public class UserRepository {
     }
 
     // TODO add permissions on this, only admin should be able to edit password
-    public User updateUser(User user) {
+    public void updateUser(User user) {
         String sql = "UPDATE USER SET FIRSTNAME=?, LASTNAME=?, ROLE=?, PASSWORD=? WHERE EMAIL=?";
 
         try {
@@ -106,15 +106,12 @@ public class UserRepository {
             st.setString(4, user.getPassword());
             st.setString(5, user.getEmail());
             st.executeUpdate();
-
-            return user;
         } catch (SQLException ex) {
            System.out.println("SQLException: " + ex.getMessage());
            System.out.println("SQLState: " + ex.getSQLState());
            System.out.println("VendorError: " + ex.getErrorCode());
-           return null;
         } catch (Exception ex) {
-            return null;
+            System.out.println(ex.getMessage());
         }
     }
 

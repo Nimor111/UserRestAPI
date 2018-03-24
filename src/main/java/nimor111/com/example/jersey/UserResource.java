@@ -7,15 +7,13 @@ import java.util.List;
 
 @Path("/users")
 public class UserResource {
-    UserRepository repo = new UserRepository();
+    private final UserRepository repo = new UserRepository();
 
     @GET
     @Path("/get")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<User> getUsers() {
-        List<User> users = repo.getUsers();
-
-        return users;
+        return repo.getUsers();
     }
 
     @GET
