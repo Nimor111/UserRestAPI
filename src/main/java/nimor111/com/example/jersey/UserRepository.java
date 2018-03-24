@@ -86,4 +86,38 @@ public class UserRepository {
            System.out.println("VendorError: " + ex.getErrorCode());
         }
     }
+
+    // TODO add permissions on this, only admin should be able to edit password
+    public void updateUser(User user) {
+        String sql = "UPDATE USER SET FIRSTNAME=?, LASTNAME=?, ROLE=?, PASSWORD=? WHERE EMAIL=?";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, user.getFirstName());
+            st.setString(2, user.getLastName());
+            st.setString(3, user.getRole().toString());
+            st.setString(4, user.getPassword());
+            st.setString(5, user.getEmail());
+            st.executeUpdate();
+        } catch (SQLException ex) {
+           System.out.println("SQLException: " + ex.getMessage());
+           System.out.println("SQLState: " + ex.getSQLState());
+           System.out.println("VendorError: " + ex.getErrorCode());
+        }
+    }
+
+    public void deleteUser(String email) {
+        String sql = "DELETE FROM USER WHERE EMAIL=?";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+
+            st.setString(1, email);
+            st.executeUpdate();
+        } catch (SQLException ex) {
+           System.out.println("SQLException: " + ex.getMessage());
+           System.out.println("SQLState: " + ex.getSQLState());
+           System.out.println("VendorError: " + ex.getErrorCode());
+        }
+    }
 }

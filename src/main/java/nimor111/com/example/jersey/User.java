@@ -1,5 +1,8 @@
 package nimor111.com.example.jersey;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class User {
 
     private String firstName;
