@@ -1,6 +1,5 @@
 package nimor111.com.example.jersey;
 
-import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
