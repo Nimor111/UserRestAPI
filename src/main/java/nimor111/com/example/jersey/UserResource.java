@@ -1,6 +1,7 @@
 package nimor111.com.example.jersey;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -12,58 +13,81 @@ public class UserResource {
     @GET
     @Path("/get")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<User> getUsers() {
-        return repo.getUsers();
+    public Response getUsers() {
+        List<User> users = repo.getUsers();
+        GenericEntity<List<User>> entity = new GenericEntity<List<User>>(users) {};
+
+        return Response
+                .ok(entity)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, OPTIONS")
+                .build();
     }
 
     @GET
     @Path("/get/{email}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public User getUser(@PathParam("email") String email) {
+    public Response getUser(@PathParam("email") String email) {
         User user = repo.getUser(email);
 
         if (user == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
 
-        return user;
+        return Response
+                .ok(user)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, OPTIONS")
+                .build();
     }
 
     @POST
     @Path("/create")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public User createUser(User user) {
+    public Response createUser(User user) {
         if (repo.createUser(user) == null) {
             throw new WebApplicationException(Response.Status.BAD_REQUEST);
         }
 
-        return user;
+        return Response
+                .ok(user)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "POST, OPTIONS")
+                .build();
     }
 
     @PUT
     @Path("/update")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public User updateUser(User user) {
+    public Response updateUser(User user) {
         if (repo.getUser(user.getEmail()) == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         } else {
             repo.updateUser(user);
         }
 
-        return user;
+        return Response
+                .ok(user)
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "POST, OPTIONS")
+                .build();
     }
 
     @DELETE
     @Path("/delete/{email}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public User deleteUser(@PathParam("email") String email) {
+    public Response deleteUser(@PathParam("email") String email) {
         User user = repo.getUser(email);
         if (user != null) {
             repo.deleteUser(email);
 
-            return user;
+            return Response
+                    .ok(user)
+                    .header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "POST, OPTIONS")
+                    .build();
         } else {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
