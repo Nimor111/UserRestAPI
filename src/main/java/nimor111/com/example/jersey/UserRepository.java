@@ -51,10 +51,11 @@ class UserRepository {
 
     public User getUser(String email) {
         User user = null;
-        String sql = String.format("SELECT * FROM USER WHERE EMAIL=\"%s\";", email);
+        String sql = "SELECT * FROM USER WHERE EMAIL=?;";
         try {
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, email);
+            ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 user = new User();
                 user.setFirstName(rs.getString(1));
