@@ -19,8 +19,6 @@ public class UserResource {
 
         return Response
                 .ok(entity)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Methods", "GET, OPTIONS")
                 .build();
     }
 
@@ -36,8 +34,6 @@ public class UserResource {
 
         return Response
                 .ok(user)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Methods", "GET, OPTIONS")
                 .build();
     }
 
@@ -52,8 +48,6 @@ public class UserResource {
 
         return Response
                 .ok(user)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Methods", "POST, OPTIONS")
                 .build();
     }
 
@@ -70,8 +64,6 @@ public class UserResource {
 
         return Response
                 .ok(user)
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Methods", "POST, OPTIONS")
                 .build();
     }
 
@@ -85,8 +77,6 @@ public class UserResource {
 
             return Response
                     .ok(user)
-                    .header("Access-Control-Allow-Origin", "*")
-                    .header("Access-Control-Allow-Methods", "POST, OPTIONS")
                     .build();
         } else {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
