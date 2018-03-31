@@ -1,4 +1,7 @@
-package nimor111.com.example.jersey;
+package nimor111.com.example.jersey.database;
+
+import nimor111.com.example.jersey.models.Role;
+import nimor111.com.example.jersey.models.User;
 
 import javax.naming.*;
 import javax.sql.DataSource;
@@ -6,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-class UserRepository {
+public class UserRepository {
     private Connection conn = null;
 
     public UserRepository() {

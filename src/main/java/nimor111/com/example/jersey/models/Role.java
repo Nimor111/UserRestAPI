@@ -1,4 +1,4 @@
-package nimor111.com.example.jersey;
+package nimor111.com.example.jersey.models;
 
 public enum Role {
     User,

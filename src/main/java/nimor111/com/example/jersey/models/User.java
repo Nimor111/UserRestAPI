@@ -1,13 +1,20 @@
-package nimor111.com.example.jersey;
+package nimor111.com.example.jersey.models;
+
+import nimor111.com.example.jersey.validators.UserValidator;
 
 import javax.xml.bind.annotation.XmlRootElement;
+
 
 @XmlRootElement
 public class User {
 
+    private UserValidator validators = new UserValidator();
+
     private String firstName;
     private String lastName;
+
     private String email;
+
     private String password;
     private Role role;
 
@@ -32,7 +39,11 @@ public class User {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        if (this.validators.isEmailValid(email)) {
+            this.email = email;
+        } else {
+            this.email = null;
+        }
     }
 
     public String getPassword() {

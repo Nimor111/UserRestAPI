@@ -1,4 +1,7 @@
-package nimor111.com.example.jersey;
+package nimor111.com.example.jersey.resources;
+
+import nimor111.com.example.jersey.models.User;
+import nimor111.com.example.jersey.database.UserRepository;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
