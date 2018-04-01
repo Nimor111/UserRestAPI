@@ -18,7 +18,7 @@ Provides crud operations on a user model.
 ```
 /api/users/update
 ```
-* DELETE remove a user by email from the database
+* DELETE remove a user by `email` from the database
 ```
 /api/users/delete/{email}
 ```
