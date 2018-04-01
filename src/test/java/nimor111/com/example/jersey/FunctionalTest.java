@@ -1,6 +1,7 @@
 package nimor111.com.example.jersey;
 
 import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.parsing.Parser;
 import org.junit.BeforeClass;
 
 public class FunctionalTest {
@@ -25,7 +26,6 @@ public class FunctionalTest {
             baseHost = "http://localhost";
         }
         RestAssured.baseURI = baseHost;
-
+        RestAssured.defaultParser = Parser.JSON;
     }
-
 }

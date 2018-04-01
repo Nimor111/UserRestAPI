@@ -3,6 +3,7 @@ package nimor111.com.example.jersey;
 import com.github.javafaker.Faker;
 import org.junit.Test;
 
+import javax.ws.rs.WebApplicationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +35,24 @@ public class UserResourceTest extends FunctionalTest {
     }
 
     @Test
+    public void updatingAdminAccountNotAllowed() {
+        Map<String, String> user = new HashMap<String, String>();
+        user.put("firstName", this.faker.name().firstName());
+        user.put("lastName", this.faker.name().lastName());
+        user.put("email", this.faker.name().firstName() + "@" + this.faker.name().lastName() + ".com");
+        user.put("role", "Administrator");
+
+        given()
+            .contentType("application/json")
+            .body(user)
+            .when()
+            .put("/users/update")
+            .then()
+            .statusCode(401);
+    }
+
+
+    @Test
     public void updatingUserReturns200AndIsSuccessful() {
         Map<String, String> user = new HashMap<String, String>();
         user.put("firstName", this.faker.name().firstName());
@@ -41,7 +60,13 @@ public class UserResourceTest extends FunctionalTest {
         user.put("email", this.faker.name().firstName() + "@" + this.faker.name().lastName() + ".com");
         user.put("role", "User");
 
-        given().contentType("application/json").body(user).when().post("/users/create").then().statusCode(200);
+        given()
+            .contentType("application/json")
+            .body(user)
+            .when()
+            .post("/users/create")
+            .then()
+            .statusCode(200);
 
         Map<String, String> updatedUser = new HashMap<String, String>();
         String newName = this.faker.name().firstName();

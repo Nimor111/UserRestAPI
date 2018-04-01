@@ -59,6 +59,9 @@ public class UserResource {
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response updateUser(User user) {
+        if(user.getRole().toString() == "Administrator") {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
         if (repo.getUser(user.getEmail()) == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         } else {
